@@ -282,31 +282,31 @@ def branched_announce_dummy_context(tmp_path, mocker, env, extra_params):
 
 
 @pytest.fixture
-def ready_dummy_context(dummy_context):
+def ready_dummy_context(dummy_context, dummy_dataframe):
     "gets dummy ready by placing a dummy dataframe at every input edge node"
     for dataset in dummy_context.pipeline.inputs():
         d = getattr(dummy_context.catalog.datasets, dataset)
-        d.save(dummy_dataframe())
+        d.save(dummy_dataframe)
     return dummy_context
 
 
 @pytest.fixture
-def ready_branched_dummy_context(branched_dummy_context):
+def ready_branched_dummy_context(branched_dummy_context, dummy_dataframe):
     "gets dummy ready by placing a dummy dataframe at every input edge node"
     print("ready branched")
     for dataset in branched_dummy_context.pipeline.inputs():
         d = getattr(branched_dummy_context.catalog.datasets, dataset)
-        d.save(dummy_dataframe())
+        d.save(dummy_dataframe)
     return branched_dummy_context
 
 
 @pytest.fixture
-def ready_branched_announce_dummy_context(branched_announce_dummy_context):
+def ready_branched_announce_dummy_context(branched_announce_dummy_context, dummy_dataframe):
     "gets dummy ready by placing a dummy dataframe at every input edge node"
     print("ready branched")
     for dataset in branched_announce_dummy_context.pipeline.inputs():
         d = getattr(branched_announce_dummy_context.catalog.datasets, dataset)
-        d.save(dummy_dataframe())
+        d.save(dummy_dataframe)
     return branched_announce_dummy_context
 
 
