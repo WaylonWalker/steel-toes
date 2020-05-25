@@ -29,7 +29,7 @@ setup(
     packages=find_packages(),
     platforms="any",
     license="MIT",
-    install_requires=["kedro",],
+    install_requires=["kedro", "colorama"],
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.6",
