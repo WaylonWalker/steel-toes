@@ -1,7 +1,7 @@
 """
 steel-toes uses distutils to create a python package.
 
-To Build a Python package
+To Build steel-toes as a Python package
 
     $ python setup.py sdist bdist_wheel --bdist-dir ~/temp/bdistwheel
 
