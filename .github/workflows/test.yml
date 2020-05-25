@@ -26,7 +26,7 @@ jobs:
         pip install ${{ matrix.kedro-versions }}
         pip install colorama
         # install test requirements
-        pip install pytest pytest-cov mypy interrogate flake8 pandas
+        pip install pytest pytest-cov pytest-mock mypy interrogate flake8 pandas
     - name: Lint with flake8
       run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     - name: install project
