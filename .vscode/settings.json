@@ -1,0 +1,22 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#073240",
+        "titleBar.activeBackground": "#020e12",
+        "titleBar.activeForeground": "#e7e7e7",
+        "activityBar.activeBackground": "#073240",
+        "activityBar.activeBorder": "#ac1387",
+        "activityBar.foreground": "#e7e7e7",
+        "activityBar.inactiveForeground": "#e7e7e799",
+        "activityBarBadge.background": "#ac1387",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "statusBar.background": "#020e12",
+        "statusBar.border": "#020e12",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#073240",
+        "titleBar.border": "#020e12",
+        "titleBar.inactiveBackground": "#020e1299",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "python.pythonPath": "/home/walkews/miniconda3/envs/kedro0160/bin/python",
+    "peacock.remoteColor": "#020e12"
+}
