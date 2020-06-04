@@ -17,5 +17,5 @@ __license__ = "MIT"
 __all__ = ["cli", "SteelToes", "whos_protected", "clean_branch"]
 
 from .cli import cli
+from .core import clean_branch, whos_protected
 from .steel_toes import SteelToes
-from .core import whos_protected, clean_branch

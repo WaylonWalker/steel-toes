@@ -65,7 +65,7 @@ class SteelToes:
         project_path = str(self.context.project_path)
         if branch is None:
             branch = get_current_git_branch(
-                project_path
+                project_path,
                 # self.context.project_path
             )  # pragma: no cover
         if branch is None:  # pragma: no cover
@@ -82,7 +82,7 @@ class SteelToes:
             inject_branch(self.branch, catalog, dataset)
 
     @hook_impl
-    def after_catalog_created(self, catalog: DataCatalog,) -> None:
+    def after_catalog_created(self, catalog: DataCatalog) -> None:
         "injects branch information `after_catalog_created` if the dataset exists"
         for dataset in catalog.list():
             inject_branch(self.branch, catalog, dataset)

@@ -5,21 +5,20 @@ pytest automatically loads conftest in all tests in this module
 """
 
 import configparser
+import itertools
 import json
+import logging
 from pathlib import Path
-from typing import Dict, Union, Any  # ,  Mapping,
+from typing import Any, Dict, Union  # ,  Mapping,
 
 import pandas as pd
 import pytest
 import yaml
-
 from kedro import __version__ as kedro_version
-from kedro.pipeline import Pipeline, node
 from kedro.framework.context import KedroContext
-from steel_toes import SteelToes, clean_branch
+from kedro.pipeline import Pipeline, node
 
-import itertools
-import logging
+from steel_toes import SteelToes, clean_branch
 
 
 def _get_local_logging_config() -> Dict:
@@ -223,12 +222,7 @@ def dummy_context(tmp_path, mocker, env, extra_params):
     # it changes logging.config and affects other unit tests
     mocker.patch("logging.config.dictConfig")
     layers = ["raw", "int", "pri", "bob"]
-    datasets = [
-        "cars",
-        "boats",
-        "horses",
-        "bob",
-    ]
+    datasets = ["cars", "boats", "horses", "bob"]
     return DummyContext(
         str(tmp_path),
         layers=layers,
@@ -245,12 +239,7 @@ def branched_dummy_context(tmp_path, mocker, env, extra_params):
     # Disable logging.config.dictConfig in KedroContext._setup_logging as
     # it changes logging.config and affects other unit tests
     mocker.patch("logging.config.dictConfig")
-    layers = [
-        "raw",
-        "int",
-        "pri",
-        "bob",
-    ]
+    layers = ["raw", "int", "pri", "bob"]
     datasets = ["cars", "boats", "horses", "bob"]
     return DummyContext(
         str(tmp_path),
@@ -320,7 +309,7 @@ def ran_dummy_context(ready_dummy_context):
 
 
 @pytest.fixture
-def ran_branched_dummy_context(ready_branched_dummy_context,):
+def ran_branched_dummy_context(ready_branched_dummy_context):
     "runs dummy_context"
     ready_branched_dummy_context.run()
     return ready_branched_dummy_context

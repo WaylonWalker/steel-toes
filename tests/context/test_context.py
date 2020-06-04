@@ -4,9 +4,9 @@ Main Testing Module
 Makes assertions based on each fixture from the ./conftest.py module
 """
 import pytest
+from kedro.framework.context import KedroContext
 
 from steel_toes import SteelToes, whos_protected
-from kedro.framework.context import KedroContext
 
 
 def is_hooked(context: KedroContext, branch: str = "") -> None:

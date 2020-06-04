@@ -25,7 +25,7 @@ def cli() -> None:
     help="Path to save the static site to",
 )
 @click.option(
-    "--branch", "-b", default=None, type=str, help="git branch to clean files from",
+    "--branch", "-b", default=None, type=str, help="git branch to clean files from"
 )
 @click.option(
     "--dryrun",

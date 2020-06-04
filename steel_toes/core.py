@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import List, Optional, Union
 
 from colorama import Fore
-from kedro.framework.context import load_context, KedroContext
+from kedro.framework.context import KedroContext, load_context
 from kedro.io.data_catalog import DataCatalog
 
 
@@ -23,7 +23,7 @@ def get_current_git_branch(proj_dir: Union[str, Path, None] = None) -> Optional[
         res = subprocess.check_output(
             ["git", "rev-parse", "--abbrev-ref", "HEAD"], cwd=proj_dir
         )
-        return res.decode().strip()
+        return str(res.decode()).strip()
     except (subprocess.CalledProcessError, FileNotFoundError):
         logging.getLogger(__name__).warning(f"Unable to git describe {proj_dir}")
     return None
@@ -100,7 +100,7 @@ def switch_branch(
     """
     current_branch = get_current_git_branch(directory)
     # breakpoint()
-    if current_branch is None: # pragma: no cover
+    if current_branch is None:  # pragma: no cover
         # branch is not mocked
         return
     for dataset in set(catalog.list()):

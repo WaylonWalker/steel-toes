@@ -1,7 +1,6 @@
 "module to test the command line interface of steel_toes"
 
-from steel_toes import __version__
-from steel_toes import cli
+from steel_toes import __version__, cli
 
 
 def test_cli(cli_runner):

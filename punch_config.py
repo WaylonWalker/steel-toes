@@ -12,9 +12,7 @@ To change version use punch -p <part> where part is major, minor, patch
 """
 __config_version__ = 1
 
-GLOBALS = {
-    "serializer": "{{major}}.{{minor}}.{{patch}}",
-}
+GLOBALS = {"serializer": "{{major}}.{{minor}}.{{patch}}"}
 
 FILES = ["setup.py", "steel_toes/__init__.py", "steel_toes/cli.py"]
 
