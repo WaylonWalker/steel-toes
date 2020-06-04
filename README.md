@@ -1,5 +1,9 @@
-# Steel Toes
+# 🥾 Steel Toes
 _a kedro hook to protect against breaking changes to data_
+
+![Python Test and Package](https://github.com/WaylonWalker/steel-toes/workflows/Python%20Test%20and%20Package/badge.svg)
+[![PyPI version](https://badge.fury.io/py/steel-toes.svg)](https://pypi.org/project/steel-toes/)
+[![Code Style: Typed-Black](https://img.shields.io/badge/code%20style-mypy|black-black.svg)](https://github.com/ambv/black)
 
 `steel-toes` is a kedro hook designed to prevent stepping on your teammates toes.  It will branch your data automatically based on your git branch, or manually by passing the branch name into the hook.
 
@@ -7,6 +11,8 @@ _a kedro hook to protect against breaking changes to data_
 ## Motivation
 
 `kedro` is a ✨ fantastic project that allows for super-fast prototyping of data pipelines, while yielding production-ready pipelines. `kedro` promotes collaborative projects by giving each team member access to the exact same data.  Team members will often make their own branch of the project and begin work.  Sometimes these changes will break existing functionality. Sometimes we make mistakes as we develop, and fix them before merging in.  Either case can be detrimental to a teammate working downstream of your changes if not careful.
+
+### 🥼 Wear the proper PPE during feature development
 
 `steel-toes` hooks into your catalog to prevent changing downstream data on your teammates while developing in parallel.  
 
