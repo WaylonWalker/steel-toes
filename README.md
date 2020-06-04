@@ -8,11 +8,11 @@ _a kedro hook to protect against breaking changes to data_
 
 `kedro` is a ✨ fantastic project that allows for super-fast prototyping of data pipelines, while yielding production-ready pipelines. `kedro` promotes collaborative projects by giving each team member access to the exact same data.  Team members will often make their own branch of the project and begin work.  Sometimes these changes will break existing functionality. Sometimes we make mistakes as we develop, and fix them before merging in.  Either case can be detrimental to a teammate working downstream of your changes if not careful.
 
-`steel-toes` hooks into your catalog to prevent changing downstream data on your teammates while developing in parallel.  
+`steel-toes` hooks into your catalog to prevent changing downstream data on your teammates while developing in parallel.
 
 ### on_catalog_created and before_pipeline_run
 
-When your project creates a catalog `steel-toes` will look to see if branched data exists, if it does it will swap the filepath to the branched path.  So you will be able to load the latest data from the perspective of any branch simulaneusly.  
+When your project creates a catalog `steel-toes` will look to see if branched data exists, if it does it will swap the filepath to the branched path.  So you will be able to load the latest data from the perspective of any branch simulaneusly.
 
 ### after_node_run
 
