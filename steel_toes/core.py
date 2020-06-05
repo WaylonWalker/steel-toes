@@ -1,5 +1,5 @@
 """
-core functionality of steel toes
+Core functionality of steel toes.
 
 This module does all of the real work to get the current branch and inject it
 into fielpaths.
@@ -16,6 +16,7 @@ from kedro.io.data_catalog import DataCatalog
 
 def get_current_git_branch(proj_dir: Union[str, Path, None] = None) -> Optional[str]:
     """Git branch of working tree.
+
     Returns: Git branch or None.
     """
     proj_dir = str(proj_dir or Path.cwd())
@@ -36,7 +37,14 @@ def inject_branch(
     save_mode: bool = False,
     reset: bool = False,
 ) -> None:
-    "injects branch into _filepath attribute of dataset between stem and suffix"
+    """Inject branch into _filepath attribute of dataset.
+
+    Branch name may be passed in or automatically picked up by the git branch.
+    Then will be injected in between stem and suffix of the _filepath
+
+    Example:
+    "data/02_intermediate/iris.csv" -> "data/02_intermediate/iris_master.csv"
+    """
     if branch is None:  # pragma: no cover
         # branch is not mocked
         branch = ""
@@ -73,7 +81,13 @@ def inject_branch(
 
 
 def rm_dataset(catalog: DataCatalog, dataset: str, dryrun: bool = False) -> None:
-    "injects git branch into _filepath attribute of dataset between stem and suffix if possible"
+    """Delete a single datasets if branched.
+
+    If the dataset was saved under the currently set branch it will have a
+    _filepath_swapped attribute attached to it and can be safely deleted when
+    running this function.  When dryrun=True the datasets that would be removed
+    will simply be printed out.
+    """
     d = getattr(catalog.datasets, dataset)
     try:
         filepath = d._filepath
@@ -94,9 +108,10 @@ def rm_dataset(catalog: DataCatalog, dataset: str, dryrun: bool = False) -> None
 def switch_branch(
     directory: Union[str, Path], catalog: DataCatalog, branch: str
 ) -> None:
-    """
-    switches branch, this is particularly useful for the cleanup command as it
-    allows for the user to cleanup when they no loger have the branch to activate
+    """Switch branch being used.
+
+    This is particularly useful for the cleanup command as it
+    allows for the user to cleanup when they no longer have the branch active.
     """
     current_branch = get_current_git_branch(directory)
     # breakpoint()
@@ -115,7 +130,7 @@ def clean_branch(
     dryrun: bool = False,
     context: KedroContext = None,
 ) -> None:
-    """finds branch datasets and removes them
+    """Iterate over the catalog to remove branched datasets.
 
     Arguments:
         directory (Path): directory of kedro project. Defaults to '.'
@@ -134,7 +149,11 @@ def clean_branch(
 
 
 def whos_protected(catalog: DataCatalog = None) -> List[str]:
-    "lists datasets protected by steel_toes"
+    """List datasets protected by steel_toes.
+
+    Only lists datasets that are currently branched off, not potentially
+    branched datasets.
+    """
     if catalog is None:
         catalog = load_context(".").catalog  # pragma: no cover
     protected = list()
@@ -146,7 +165,7 @@ def whos_protected(catalog: DataCatalog = None) -> List[str]:
 
 
 def announce_protection(catalog: DataCatalog) -> None:
-    "prints out datasets that are protected"
+    """Pretty print datasets that are protected."""
     protected = whos_protected(catalog)
     if len(protected) == 0:
         print(f"{Fore.LIGHTBLACK_EX}STEEL-TOES |{Fore.RED} NO DATASETS PROETECTED")

@@ -1,10 +1,9 @@
-"""Steel Toes Kedro Hook
+"""Steel Toes Kedro Hook.
 
 A hook that changes the filepath of your data based on current working git branch.
 
 Example:
-
-since steel_toes requires access to the project_context to work properly you will
+Since steel_toes requires access to the project_context to work properly you will
 need to use a bit of an unconventional method to initialize your hooks.
 
     >>> from steel_toes import SteelToes
@@ -31,7 +30,7 @@ from .core import announce_protection, get_current_git_branch, inject_branch
 
 
 class SteelToes:
-    """ Steel Toes Kedro Hook
+    """Steel Toes Kedro Hook.
 
     A hook that changes the filepath of your data based on current working git branch.
 
@@ -60,12 +59,12 @@ class SteelToes:
         branch: Union[str, None] = None,
         announce: bool = False,
     ) -> None:
-        "initializes a steel_toes kedro hook instance"
+        """Initialize a steel_toes kedro hook instance."""
         self.context = context
         project_path = str(self.context.project_path)
         if branch is None:
             branch = get_current_git_branch(
-                project_path,
+                project_path
                 # self.context.project_path
             )  # pragma: no cover
         if branch is None:  # pragma: no cover
@@ -77,13 +76,13 @@ class SteelToes:
 
     @hook_impl
     def before_pipeline_run(self, pipeline: Pipeline, catalog: DataCatalog) -> None:
-        "injects branch information `before_pipeline_run` if the dataset exists"
+        """Inject branch information `before_pipeline_run` if the dataset exists."""
         for dataset in pipeline.all_inputs():
             inject_branch(self.branch, catalog, dataset)
 
     @hook_impl
     def after_catalog_created(self, catalog: DataCatalog) -> None:
-        "injects branch information `after_catalog_created` if the dataset exists"
+        """Inject branch information `after_catalog_created` if the dataset exists."""
         for dataset in catalog.list():
             inject_branch(self.branch, catalog, dataset)
         if self.announce:
@@ -91,10 +90,9 @@ class SteelToes:
 
     @hook_impl
     def after_node_run(self, catalog: DataCatalog, outputs: Dict[str, Any]) -> None:
-        """
-        injects branch information `after_node_run` whether the datasets exists
-        or not.  On first run of a branch it will create this will create the dataset
+        """Inject branch information `after_node_run`.
 
+        On first run of a branch it will create this will create the dataset
         """
         for output in outputs:
             inject_branch(self.branch, catalog, output, save_mode=True)

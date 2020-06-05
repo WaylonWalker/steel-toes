@@ -1,5 +1,5 @@
 """
-cli module provides steel-toes command line interface
+cli module provides steel-toes command line interface.
 
 The main use case for the cli is to cleanup data after branch work is done.
 """
@@ -13,7 +13,25 @@ __version__ = "0.0.1"
 @click.group(name="steel-toes")
 @click.version_option(__version__, "-V", "--version", help="Prints version and exits")
 def cli() -> None:
-    "help"
+    """Steel Toes is designed to protect datasets from feature development.
+
+    During feature development it is not uncommon to break a dataset for a period.
+    To prevent stepping on your team-mates toes the `steel-toes` hook can be
+    applied to your project.
+
+    Exmple:
+        >>> from steel_toes import SteelToes
+
+        >>> class ProjectContext(KedroContext):
+        >>>    project_name = "kedro0160"
+        >>>    project_version = "0.16.1"
+        >>>    package_name = "kedro0160"
+
+        >>>    @property
+        >>>    def hooks(self):
+        >>>       self._hooks = [ SteelToes(self), ]
+        >>>       return self._hooks
+    """
     pass  # pragma: nocover
 
 
@@ -37,5 +55,5 @@ def cli() -> None:
 def clean_branch(
     directory: str = ".", branch: str = None, dryrun: bool = False
 ) -> None:
-    "finds branch datasets and removes them"
+    """Find branch datasets and removes them."""
     _clean_branch(directory=directory, branch=branch, dryrun=dryrun)  # pragma: nocover

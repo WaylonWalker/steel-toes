@@ -1,4 +1,5 @@
-"""
+"""Steel Toes is designed to protect datasets from feature development.
+
 Steel Toes provides protection against stepping on teammates toes inside of a
 kedro project.  It does this by appending current git branch to the `_filepath`
 of datasets on save, and loads the branch version if it exists.
