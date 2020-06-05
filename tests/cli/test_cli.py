@@ -1,4 +1,4 @@
-"module to test the command line interface of steel_toes"
+"""Module to test the command line interface of steel_toes."""
 
 from steel_toes import __version__, cli
 
@@ -12,8 +12,11 @@ def test_cli(cli_runner):
 
 
 def test_print_version(cli_runner):
-    """Check that `kedro --version` and `kedro -V` outputs contain
-    the current package version."""
+    """Check that `kedro --version` and `kedro -V` outputs contain.
+
+    the current package version.
+
+    """
     result = cli_runner.invoke(cli, ["--version"])
 
     assert result.exit_code == 0

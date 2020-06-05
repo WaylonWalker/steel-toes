@@ -1,1 +1,1 @@
-"steel-toes cli testing module"
+"""steel-toes cli testing module."""

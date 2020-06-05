@@ -1,5 +1,4 @@
-"""
-configuration for context testing module
+"""Configuration for context testing module.
 
 pytest automatically loads conftest in all tests in this module
 """
@@ -22,7 +21,7 @@ from steel_toes import SteelToes, clean_branch
 
 
 def _get_local_logging_config() -> Dict:
-    "creates local logging config for running the dummy projects"
+    """Create local logging config for running the dummy projects."""
     return {
         "version": 1,
         "formatters": {
@@ -50,21 +49,21 @@ def _get_local_logging_config() -> Dict:
 
 
 def _write_yaml(filepath: Path, config: Dict) -> None:
-    "simple yaml writer"
+    """YAML writer."""
     filepath.parent.mkdir(parents=True, exist_ok=True)
     yaml_str = yaml.dump(config)
     filepath.write_text(yaml_str)
 
 
 def _write_json(filepath: Path, config: Dict) -> None:
-    "simple json writer"
+    """JSON writer."""
     filepath.parent.mkdir(parents=True, exist_ok=True)
     json_str = json.dumps(config)
     filepath.write_text(json_str)
 
 
 def _write_dummy_ini(filepath: Path) -> None:
-    "simple ini writer"
+    """INI writer."""
     filepath.parent.mkdir(parents=True, exist_ok=True)
     config = configparser.ConfigParser()
     config["prod"] = {"url": "postgresql://user:pass@url_prod/db"}
@@ -75,8 +74,7 @@ def _write_dummy_ini(filepath: Path) -> None:
 
 @pytest.fixture
 def base_config(tmp_path: Path) -> Dict:
-    """
-    creates base config file containing all tested datasets
+    """Create base config file containing all tested datasets.
 
     Note we are using bob as our test git branch, so that is used in the layers
     and datasets as well to ensure we are not clobbering anything up when we
@@ -111,13 +109,13 @@ def base_config(tmp_path: Path) -> Dict:
 
 @pytest.fixture
 def local_config(tmp_path: Path) -> Dict:
-    "no need to test local config"
+    """No need to test local config."""
     return {}
 
 
 @pytest.fixture(params=[None])
 def env(request) -> str:
-    "creates env"
+    """Create env."""
     return request.param
 
 
@@ -125,7 +123,11 @@ def env(request) -> str:
 def config_dir(
     tmp_path: Path, base_config: Dict, local_config: Dict, env: Union[str, None]
 ) -> None:
-    "Main config fixture that creates combines everything to create the config files"
+    """Create config files in temp_path.
+
+    Combine everything to create the config files.
+
+    """
     env = "local" if env is None else env
     proj_catalog = tmp_path / "conf" / "base" / "catalog.yml"
     env_catalog = tmp_path / "conf" / str(env) / "catalog.yml"
@@ -146,22 +148,22 @@ def config_dir(
 
 @pytest.fixture
 def dummy_dataframe() -> pd.DataFrame:
-    "creates dummy data for testing"
+    """Create dummy data for testing."""
     return pd.DataFrame({"col1": [1, 2], "col2": [4, 5], "col3": [5, 6]})
 
 
 def identity(input1: Any) -> Any:
-    "used to pass dummy data without any operations"
+    """Use to pass dummy data without any operations."""
     return input1  # pragma: no cover
 
 
 class DummyContext(KedroContext):
-    """
-    Dummy Context for testing
+    """Dummy Context for testing.
 
     Note there is a init with extra arguments than may normally be there.  This
     was done to make the DummyContext More flexible.  I was hoping to be able to
     parameterize some of the data.
+
     """
 
     project_name = "bob"
@@ -171,7 +173,7 @@ class DummyContext(KedroContext):
     def __init__(
         self, project_path, env, extra_params, layers, datasets, branch, announce=False
     ):
-        "initializes dummy context"
+        """Initialize dummy context."""
         self.layers = layers
         self.datasets = datasets
         self.branch = branch
@@ -179,10 +181,13 @@ class DummyContext(KedroContext):
         super().__init__(project_path, env, extra_params)
 
     def _get_pipelines(self) -> Dict[str, Pipeline]:
-        """
-        standard _get_pipelines, nothing special
+        """Create a default pipleine based on layers and datasets.
+
+        Standard _get_pipelines, nothing special.
+
         uses itertools to create a list of every combination of layer and dataset
         uses zip to run identity on every layer_dataset combination
+
         """
         nodes = [
             "_".join(i) for i in list(itertools.product(self.layers, self.datasets))
@@ -197,13 +202,16 @@ class DummyContext(KedroContext):
         return {"__default__": pipeline}
 
     def _setup_logging(self) -> None:
-        "logging was clogging up the failed test results unnecessarily"
+        """Disable logging during test.
 
+        Logging was clogging up the failed test results unnecessarily.
+
+        """
         logging.disable(50)
 
     @property
     def hooks(self):
-        "contains kedro hooks"
+        """Contains kedro hooks."""
         print(f"\n\nSTEELTOES BRANCH {self.branch}\n\n")
         self._hooks = [SteelToes(self, branch=self.branch, announce=self.announce)]
         return self._hooks
@@ -211,13 +219,13 @@ class DummyContext(KedroContext):
 
 @pytest.fixture(params=[None])
 def extra_params(request):
-    "extra params fixure, not really used in this project"
+    """Extra params fixure, not really used in this project."""
     return request.param
 
 
 @pytest.fixture
 def dummy_context(tmp_path, mocker, env, extra_params):
-    "sets up dummy_context with empty branch"
+    """Set up dummy_context with empty branch."""
     # Disable logging.config.dictConfig in KedroContext._setup_logging as
     # it changes logging.config and affects other unit tests
     mocker.patch("logging.config.dictConfig")
@@ -235,7 +243,7 @@ def dummy_context(tmp_path, mocker, env, extra_params):
 
 @pytest.fixture
 def branched_dummy_context(tmp_path, mocker, env, extra_params):
-    "sets up dummy_context with 'bob' branch"
+    """Set up dummy_context with 'bob' branch."""
     # Disable logging.config.dictConfig in KedroContext._setup_logging as
     # it changes logging.config and affects other unit tests
     mocker.patch("logging.config.dictConfig")
@@ -253,7 +261,7 @@ def branched_dummy_context(tmp_path, mocker, env, extra_params):
 
 @pytest.fixture
 def branched_announce_dummy_context(tmp_path, mocker, env, extra_params):
-    "sets up dummy_contet with 'bob' branch and announces protected datasets"
+    """Set up dummy_contet with 'bob' branch and announces protected datasets."""
     # Disable logging.config.dictConfig in KedroContext._setup_logging as
     # it changes logging.config and affects other unit tests
     mocker.patch("logging.config.dictConfig")
@@ -272,7 +280,7 @@ def branched_announce_dummy_context(tmp_path, mocker, env, extra_params):
 
 @pytest.fixture
 def ready_dummy_context(dummy_context, dummy_dataframe):
-    "gets dummy ready by placing a dummy dataframe at every input edge node"
+    """Get dummy ready by placing a dummy dataframe at every input edge node."""
     for dataset in dummy_context.pipeline.inputs():
         d = getattr(dummy_context.catalog.datasets, dataset)
         d.save(dummy_dataframe)
@@ -281,7 +289,7 @@ def ready_dummy_context(dummy_context, dummy_dataframe):
 
 @pytest.fixture
 def ready_branched_dummy_context(branched_dummy_context, dummy_dataframe):
-    "gets dummy ready by placing a dummy dataframe at every input edge node"
+    """Get dummy ready by placing a dummy dataframe at every input edge node."""
     print("ready branched")
     for dataset in branched_dummy_context.pipeline.inputs():
         d = getattr(branched_dummy_context.catalog.datasets, dataset)
@@ -293,7 +301,7 @@ def ready_branched_dummy_context(branched_dummy_context, dummy_dataframe):
 def ready_branched_announce_dummy_context(
     branched_announce_dummy_context, dummy_dataframe
 ):
-    "gets dummy ready by placing a dummy dataframe at every input edge node"
+    """Get dummy ready by placing a dummy dataframe at every input edge node."""
     print("ready branched")
     for dataset in branched_announce_dummy_context.pipeline.inputs():
         d = getattr(branched_announce_dummy_context.catalog.datasets, dataset)
@@ -303,21 +311,21 @@ def ready_branched_announce_dummy_context(
 
 @pytest.fixture
 def ran_dummy_context(ready_dummy_context):
-    "runs dummy_context"
+    """Run dummy_context."""
     ready_dummy_context.run()
     return ready_dummy_context
 
 
 @pytest.fixture
 def ran_branched_dummy_context(ready_branched_dummy_context):
-    "runs dummy_context"
+    """Run dummy_context."""
     ready_branched_dummy_context.run()
     return ready_branched_dummy_context
 
 
 @pytest.fixture
 def dry_cleaned_dummy_context(ran_branched_dummy_context):
-    "runs clean_branch with --dryrun"
+    """Run clean_branch with --dryrun."""
     print(f"self.branch: {ran_branched_dummy_context.branch}")
     clean_branch(
         directory=".", branch="bob", dryrun=True, context=ran_branched_dummy_context
@@ -327,7 +335,7 @@ def dry_cleaned_dummy_context(ran_branched_dummy_context):
 
 @pytest.fixture
 def cleaned_dummy_context(dry_cleaned_dummy_context):
-    "runs clean_branch"
+    """Run clean_branch."""
     clean_branch(
         directory=".", branch="bob", dryrun=False, context=dry_cleaned_dummy_context
     )

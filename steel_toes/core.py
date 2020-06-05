@@ -44,6 +44,7 @@ def inject_branch(
 
     Example:
     "data/02_intermediate/iris.csv" -> "data/02_intermediate/iris_master.csv"
+
     """
     if branch is None:  # pragma: no cover
         # branch is not mocked
@@ -137,6 +138,7 @@ def clean_branch(
         branch (str): git branch to clean files from. Defaults to current branch.
         dryrun (bool): Displays the files that would be deleted using the
             specified command without actually deleting them.
+
     """
     if context is None:
         # tests do not create a full project structure an need to pass context

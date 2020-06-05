@@ -1,5 +1,7 @@
 """
-punch versioning config, punch is used to change semver version of the project
+Punch versioning configuration file.
+
+punch is used to change semver version of the project
 in every necessary place and properly tag git commit with a release.
 
 Install Punch

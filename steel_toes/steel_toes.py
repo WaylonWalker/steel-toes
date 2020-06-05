@@ -51,6 +51,7 @@ class SteelToes:
         >>> def hooks(self):
         ...    self._hooks = [ SteelToes(self) ]
         ...    return self._hooks
+
     """
 
     def __init__(

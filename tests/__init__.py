@@ -1,1 +1,1 @@
-"steel-toes testing module"
+"""steel-toes testing module."""
