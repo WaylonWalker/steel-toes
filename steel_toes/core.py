@@ -8,11 +8,10 @@ import copy
 import logging
 import subprocess
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import Any, List, Optional, Union
 
 from colorama import Fore
 from kedro.framework.context import KedroContext, load_context
-from kedro.io.core import AbstractDataSet
 from kedro.io.data_catalog import DataCatalog
 
 
@@ -32,7 +31,7 @@ def get_current_git_branch(proj_dir: Union[str, Path, None] = None) -> Optional[
     return None
 
 
-def branched_dataset_exists(dataset: AbstractDataSet, branched_filepath: str) -> bool:
+def branched_dataset_exists(dataset: Any, branched_filepath: str) -> bool:
     """Check if branched filepath exists.
 
     Filepath swapping ensures that we utilize the datasets existing _exists() method.
