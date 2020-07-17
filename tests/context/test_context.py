@@ -23,7 +23,10 @@ def is_empty(context: KedroContext, branch: str = "") -> None:
     """
     assert context.branch == branch
     for dataset in context.catalog.list():
-        d = getattr(context.catalog.datasets, dataset)
+        try:
+            d = getattr(context.catalog.datasets, dataset)
+        except AttributeError:
+            return
         assert ~hasattr(d, "_filepath_swapped")
         assert ~d.exists()
 
@@ -44,7 +47,10 @@ def is_swapped(context: KedroContext, branch: str = "") -> None:
     """Test that protected filepaths are swapped after test."""
     assert context.branch == branch
     for dataset in context.catalog.list():
-        d = getattr(context.catalog.datasets, dataset)
+        try:
+            d = getattr(context.catalog.datasets, dataset)
+        except AttributeError:
+            return
         if dataset in context.pipeline.inputs() or "param" in dataset:
             assert ~hasattr(d, "_filepath_swapped")
         else:
@@ -56,7 +62,10 @@ def is_dry_cleaned(context: KedroContext, branch: str = "") -> None:
     """Ensure properly dry cleaned."""
     assert context.branch == branch
     for dataset in context.catalog.list():
-        d = getattr(context.catalog.datasets, dataset)
+        try:
+            d = getattr(context.catalog.datasets, dataset)
+        except AttributeError:
+            return
         if dataset in context.pipeline.inputs() or "param" in dataset:
             assert ~hasattr(d, "_filepath_swapped")
         else:
@@ -69,7 +78,10 @@ def is_cleaned(context: KedroContext, branch: str = "") -> None:
     """Ensure properly cleaned."""
     assert context.branch == "bob"
     for dataset in context.catalog.list():
-        d = getattr(context.catalog.datasets, dataset)
+        try:
+            d = getattr(context.catalog.datasets, dataset)
+        except AttributeError:
+            return
         assert ~hasattr(d, "_filepath_swapped")
         if "param" not in dataset and "bob" not in dataset:
             assert "bob" not in str(d._filepath.stem)
