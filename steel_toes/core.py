@@ -4,6 +4,7 @@ Core functionality of steel toes.
 This module does all of the real work to get the current branch and inject it
 into fielpaths.
 """
+import copy
 import logging
 import subprocess
 from pathlib import Path
@@ -11,6 +12,7 @@ from typing import List, Optional, Union
 
 from colorama import Fore
 from kedro.framework.context import KedroContext, load_context
+from kedro.io.core import AbstractDataSet
 from kedro.io.data_catalog import DataCatalog
 
 
@@ -28,6 +30,19 @@ def get_current_git_branch(proj_dir: Union[str, Path, None] = None) -> Optional[
     except (subprocess.CalledProcessError, FileNotFoundError):
         logging.getLogger(__name__).warning(f"Unable to git describe {proj_dir}")
     return None
+
+
+def branched_dataset_exists(dataset: AbstractDataSet, branched_filepath: str) -> bool:
+    """Check if branched filepath exists.
+
+    Filepath swapping ensures that we utilize the datasets existing _exists() method.
+
+    Returns: bools - whether branched_filepath exists or not
+    """
+    copied_dataset = copy.copy(dataset)
+    copied_dataset._filepath = branched_filepath
+    # needs type conversion kedro implemnets ANY
+    return True if copied_dataset._exists() else False
 
 
 def inject_branch(
@@ -70,7 +85,7 @@ def inject_branch(
     else:
         return
 
-    if Path(branched_filepath).exists() or save_mode or reset:
+    if branched_dataset_exists(d, branched_filepath) or save_mode or reset:
         d._filepath = branched_filepath
         d._filepath_swapped = True
 
@@ -89,7 +104,10 @@ def rm_dataset(catalog: DataCatalog, dataset: str, dryrun: bool = False) -> None
     running this function.  When dryrun=True the datasets that would be removed
     will simply be printed out.
     """
-    d = getattr(catalog.datasets, dataset)
+    try:
+        d = getattr(catalog.datasets, dataset)
+    except AttributeError:
+        return
     try:
         filepath = d._filepath
     except AttributeError:
@@ -160,9 +178,12 @@ def whos_protected(catalog: DataCatalog = None) -> List[str]:
         catalog = load_context(".").catalog  # pragma: no cover
     protected = list()
     for dataset in catalog.list():
-        d = getattr(catalog.datasets, dataset)
-        if hasattr(d, "_filepath_swapped"):
-            protected.append(dataset)
+        try:
+            d = getattr(catalog.datasets, dataset)
+            if hasattr(d, "_filepath_swapped"):
+                protected.append(dataset)
+        except AttributeError:
+            pass
     return protected
 
 
@@ -177,7 +198,10 @@ def announce_protection(catalog: DataCatalog) -> None:
     )
 
     for dataset in protected:
-        d = getattr(catalog.datasets, dataset)
-        print(
-            f"{Fore.LIGHTBLACK_EX}{dataset}: {Fore.LIGHTMAGENTA_EX}{d._filepath}{Fore.RESET}"
-        )
+        try:
+            d = getattr(catalog.datasets, dataset)
+            print(
+                f"{Fore.LIGHTBLACK_EX}{dataset}: {Fore.LIGHTMAGENTA_EX}{d._filepath}{Fore.RESET}"
+            )
+        except AttributeError:  # pragma: no cover
+            pass
