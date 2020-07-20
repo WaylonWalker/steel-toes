@@ -42,7 +42,7 @@ jobs:
       - name: type checking with mypy
         run: mypy steel_toes
       - name: check fully documented
-        run: interrogate -f 100 -vv
+        run: interrogate -f 100 -vv --exclude punch_version.py
       - name: Test with pytest
         run: pytest
   build:
