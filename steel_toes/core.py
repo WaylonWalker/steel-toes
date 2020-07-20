@@ -57,7 +57,7 @@ def inject_branch(
     Then will be injected in between stem and suffix of the _filepath
 
     Example:
-    "data/02_intermediate/iris.csv" -> "data/02_intermediate/iris_master.csv"
+    "data/02_intermediate/iris.csv" -> "data/02_intermediate/iris_main.csv"
 
     """
     if branch is None:  # pragma: no cover

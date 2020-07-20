@@ -91,7 +91,7 @@ Options:
 
 ## Contributing
 
-**You're Awesome** for considering a contribution!  Contributions are welcome, please check out the [Contributing Guide](https://github.com/WaylonWalker/steel-toes/blob/master/contributing.md) for more information.  Please be a positive member of the community and embrace feedback
+**You're Awesome** for considering a contribution!  Contributions are welcome, please check out the [Contributing Guide](https://github.com/WaylonWalker/steel-toes/blob/main/contributing.md) for more information.  Please be a positive member of the community and embrace feedback
 
 ## Versioning
 
