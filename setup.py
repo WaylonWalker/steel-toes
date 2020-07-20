@@ -19,7 +19,7 @@ README = (Path(__file__).parent / "README.md").read_text(encoding="utf-8")
 
 setup(
     name=NAME,
-    version="0.1.1",
+    version="0.1.2",
     url="https://github.com/WaylonWalker/find-kedro.git",
     author="Waylon Walker",
     author_email="waylon@waylonwalker.com",
