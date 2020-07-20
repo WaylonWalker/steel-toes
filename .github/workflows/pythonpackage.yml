@@ -1,9 +1,11 @@
 name: Python Test and Package
 
 on:
-  push:
-    tags:
-      - "*"
+  pull_request:
+    branches:
+      - main
+
+
 jobs:
   lint_test:
     strategy:
