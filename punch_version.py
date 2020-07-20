@@ -1,4 +1,3 @@
-"""Latest version of the project."""
 major = 0
 minor = 1
-patch = 0
+patch = 2

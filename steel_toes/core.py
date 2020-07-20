@@ -190,10 +190,12 @@ def announce_protection(catalog: DataCatalog) -> None:
     """Pretty print datasets that are protected."""
     protected = whos_protected(catalog)
     if len(protected) == 0:
-        print(f"{Fore.LIGHTBLACK_EX}STEEL-TOES |{Fore.RED} NO DATASETS PROETECTED")
+        print(
+            f"{Fore.LIGHTBLACK_EX}STEEL-TOES |{Fore.RED} NO DATASETS PROETECTED{Fore.RESET}"
+        )
         return
     print(
-        f"{Fore.LIGHTBLACK_EX}STEEL-TOES |{Fore.YELLOW}{len(protected)}{Fore.GREEN} DATASETS PROETECTED"
+        f"{Fore.LIGHTBLACK_EX}STEEL-TOES |{Fore.YELLOW}{len(protected)}{Fore.GREEN} DATASETS PROETECTED{Fore.RESET}"
     )
 
     for dataset in protected:
