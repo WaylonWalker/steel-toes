@@ -175,7 +175,7 @@ def whos_protected(catalog: DataCatalog = None) -> List[str]:
     """
     if catalog is None:
         catalog = load_context(".").catalog  # pragma: no cover
-    protected = list()
+    protected = []
     for dataset in catalog.list():
         try:
             d = getattr(catalog.datasets, dataset)
