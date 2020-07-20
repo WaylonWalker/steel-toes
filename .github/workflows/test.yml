@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "*"
+      - "!master"
 jobs:
   lint_test:
     strategy:
