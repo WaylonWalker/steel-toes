@@ -1,4 +1,4 @@
-# 🥾 Steel Toes
+<h1 align='center'><span aria-role='img' aria-label='boot'>🥾</span> Steel Toes</h1>
 _a kedro hook to protect against breaking changes to data_
 
 ![Python Test and Package](https://github.com/WaylonWalker/steel-toes/workflows/Python%20Test%20and%20Package/badge.svg)
