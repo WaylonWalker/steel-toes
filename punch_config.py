@@ -22,6 +22,7 @@ VERSION = ["major", "minor", "patch"]
 
 VCS = {
     "name": "git",
+    "target_branch": "release-{{major}}.{{minor}}.{{patch}}",
     "commit_message": (
         "Version updated from {{ current_version }}" " to {{ new_version }}"
     ),
