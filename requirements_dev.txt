@@ -1,4 +1,6 @@
+bump2version
 flake8
+GitPython
 interrogate
 mypy
 pandas
