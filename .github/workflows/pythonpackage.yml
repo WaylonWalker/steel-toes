@@ -54,7 +54,7 @@ jobs:
         with:
           python-version: 3.8
       - name: build
-        run: python setup.py sdist bdist_wheel
+        run: pip install wheel && python setup.py sdist bdist_wheel
       - name: pypi-publish
         # if: github.ref == 'refs/heads/main'
         uses: pypa/gh-action-pypi-publish@v1.1.0
