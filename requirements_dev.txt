@@ -1,0 +1,12 @@
+bump2version
+flake8
+GitPython
+interrogate
+mypy
+pandas
+pytest
+pytest-cov
+pytest-mock
+PyYAML
+setuptools
+wheel

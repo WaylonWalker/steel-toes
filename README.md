@@ -1,4 +1,5 @@
 <h1 align='center'><span aria-role='img' aria-label='boot'>🥾</span> Steel Toes</h1>
+
 _a kedro hook to protect against breaking changes to data_
 
 ![Python Test and Package](https://github.com/WaylonWalker/steel-toes/workflows/Python%20Test%20and%20Package/badge.svg)
@@ -36,6 +37,24 @@ pip install steel-toes
 
 since `steel-toes` requires access to the project_context to work you will
 need to use a bit of an unconventional method to initialize your hooks.
+
+## Override with environment variable
+
+In certain situations such as using `kedro docker` in production, there is no git branch to pull from.  Setting an environment variable before `steel-toes` initializes will set the branch.
+
+### set environment variable in the shell
+
+``` bash
+STEEL_TOES_BRANCH='PROD'
+```
+
+### set environment variable with python
+
+```bash
+import os
+
+os.environ["STEEL_TOES_BRANCH"] = "PROD"
+```
 
 ### Example Setup
 

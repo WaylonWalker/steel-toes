@@ -26,7 +26,7 @@ from kedro.framework.hooks import hook_impl
 from kedro.io.data_catalog import DataCatalog
 from kedro.pipeline import Pipeline
 
-from .core import announce_protection, get_current_git_branch, inject_branch
+from .core import announce_protection, get_current_branch, inject_branch
 
 
 class SteelToes:
@@ -64,7 +64,7 @@ class SteelToes:
         self.context = context
         project_path = str(self.context.project_path)
         if branch is None:
-            branch = get_current_git_branch(
+            branch = get_current_branch(
                 project_path
                 # self.context.project_path
             )  # pragma: no cover

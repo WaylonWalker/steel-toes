@@ -17,9 +17,15 @@ NAME = "steel-toes"
 
 README = (Path(__file__).parent / "README.md").read_text(encoding="utf-8")
 
+with open("requirements.txt", "r", encoding="utf-8") as f:
+    requires = [x.strip() for x in f if x.strip()]
+
+with open("requirements_dev.txt", "r", encoding="utf-8") as f:
+    dev_requires = [x.strip() for x in f if x.strip()]
+
 setup(
     name=NAME,
-    version="0.1.2",
+    version="0.2.0",
     url="https://github.com/WaylonWalker/find-kedro.git",
     author="Waylon Walker",
     author_email="waylon@waylonwalker.com",
@@ -29,7 +35,8 @@ setup(
     packages=find_packages(),
     platforms="any",
     license="MIT",
-    install_requires=["kedro", "colorama"],
+    install_requires=requires,
+    extras_require={"dev": dev_requires},
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.6",
