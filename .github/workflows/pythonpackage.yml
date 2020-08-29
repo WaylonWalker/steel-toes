@@ -1,7 +1,7 @@
 name: Python Test and Package
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 
