@@ -6,6 +6,7 @@ into fielpaths.
 """
 import copy
 import logging
+import os
 import subprocess
 from pathlib import Path
 from typing import Any, List, Optional, Union
@@ -13,6 +14,18 @@ from typing import Any, List, Optional, Union
 from colorama import Fore
 from kedro.framework.context import KedroContext, load_context
 from kedro.io.data_catalog import DataCatalog
+
+
+def get_current_branch(proj_dir: Union[str, Path, None] = None) -> Optional[str]:
+    """Get the current branch to use.
+
+    First checks for an environment variable `STEEL_TOES_BRANCH` if none is found, the
+    current git branch will be preferred.
+    """
+    branch = os.getenv("STEEL_TOES_BRANCH")
+    if branch is None:
+        return get_current_git_branch(proj_dir)
+    return branch
 
 
 def get_current_git_branch(proj_dir: Union[str, Path, None] = None) -> Optional[str]:
