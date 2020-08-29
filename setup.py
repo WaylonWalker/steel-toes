@@ -25,7 +25,7 @@ with open("requirements_dev.txt", "r", encoding="utf-8") as f:
 
 setup(
     name=NAME,
-    version="0.1.2",
+    version="0.2.0",
     url="https://github.com/WaylonWalker/find-kedro.git",
     author="Waylon Walker",
     author_email="waylon@waylonwalker.com",

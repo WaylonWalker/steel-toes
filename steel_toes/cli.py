@@ -7,7 +7,7 @@ import click
 
 from .core import clean_branch as _clean_branch
 
-__version__ = "0.1.2"
+__version__ = "0.2.0"
 
 
 @click.group(name="steel-toes")
