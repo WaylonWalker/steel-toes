@@ -7,12 +7,11 @@ into fielpaths.
 import copy
 import logging
 import os
-import subprocess
 from pathlib import Path
+import subprocess
 from typing import Any, List, Optional, Union
 
 from colorama import Fore
-from kedro.framework.context import KedroContext, load_context
 from kedro.io.data_catalog import DataCatalog
 
 
@@ -159,7 +158,7 @@ def clean_branch(
     directory: Union[str, Path] = ".",
     branch: str = None,
     dryrun: bool = False,
-    context: KedroContext = None,
+    context=None,
 ) -> None:
     """Iterate over the catalog to remove branched datasets.
 
@@ -172,7 +171,8 @@ def clean_branch(
     """
     if context is None:
         # tests do not create a full project structure an need to pass context
-        context = load_context(directory)  # pragma: nocover
+        # context = load_context(directory)  # pragma: nocover
+        ...
     catalog = context.catalog
     if branch is not None:
         switch_branch(directory=directory, catalog=catalog, branch=branch)
@@ -187,7 +187,8 @@ def whos_protected(catalog: DataCatalog = None) -> List[str]:
     branched datasets.
     """
     if catalog is None:
-        catalog = load_context(".").catalog  # pragma: no cover
+        # catalog = load_context(".").catalog  # pragma: no cover
+        ...
     protected = list()
     for dataset in catalog.list():
         try:
