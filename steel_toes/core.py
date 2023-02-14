@@ -101,7 +101,11 @@ def inject_branch(
 
     if branched_dataset_exists(d, branched_filepath) or save_mode or reset:
         logger.info(
-            f"STEEL_TOES:{hook} '{d._filepath.stem}{d._filepath.suffix}' -> '{branched_filepath.stem}{branched_filepath.suffix}'"
+            (
+                f"STEEL_TOES:{hook} "
+                f"'{d._filepath.stem}{d._filepath.suffix}' -> "
+                f"'{branched_filepath.stem}{branched_filepath.suffix}'"
+            )
         )
         d._filepath = branched_filepath
         d._filepath_swapped = True
