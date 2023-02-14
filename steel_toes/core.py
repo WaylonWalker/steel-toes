@@ -92,10 +92,6 @@ def inject_branch(
         branched_filepath = (
             filepath.parent / f"{filepath.stem}{branchstr}{filepath.suffix}"
         )
-    # elif branch is not None and filepath.stem[-len(branch) - 1 :] == f"_{branch}":
-    #     branched_filepath = (
-    #         filepath.parent / f"{filepath.stem[:-len(branch) - 1]}{filepath.suffix}"
-    #     )
     else:
         return
 
@@ -154,7 +150,6 @@ def switch_branch(
     allows for the user to cleanup when they no longer have the branch active.
     """
     current_branch = get_current_git_branch(directory)
-    # breakpoint()
     if current_branch is None:  # pragma: no cover
         # branch is not mocked
         return
@@ -181,7 +176,6 @@ def clean_branch(
     """
     if context is None:
         # tests do not create a full project structure an need to pass context
-        # context = load_context(directory)  # pragma: nocover
         ...
     catalog = context.catalog
     if branch is not None:
@@ -197,7 +191,6 @@ def whos_protected(catalog: DataCatalog = None) -> List[str]:
     branched datasets.
     """
     if catalog is None:
-        # catalog = load_context(".").catalog  # pragma: no cover
         ...
     protected = list()
     for dataset in catalog.list():
