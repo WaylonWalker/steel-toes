@@ -19,9 +19,9 @@ need to use a bit of an unconventional method to initialize your hooks.
 """
 
 
+from pathlib import Path
 from typing import Any, Dict, Union
 
-from kedro.framework.context import KedroContext
 from kedro.framework.hooks import hook_impl
 from kedro.io.data_catalog import DataCatalog
 from kedro.pipeline import Pipeline
@@ -56,13 +56,11 @@ class SteelToes:
 
     def __init__(
         self,
-        context: KedroContext,
         branch: Union[str, None] = None,
         announce: bool = False,
     ) -> None:
         """Initialize a steel_toes kedro hook instance."""
-        self.context = context
-        project_path = str(self.context.project_path)
+        project_path = Path(".")
         if branch is None:
             branch = get_current_branch(
                 project_path
@@ -79,13 +77,13 @@ class SteelToes:
     def before_pipeline_run(self, pipeline: Pipeline, catalog: DataCatalog) -> None:
         """Inject branch information `before_pipeline_run` if the dataset exists."""
         for dataset in pipeline.all_inputs():
-            inject_branch(self.branch, catalog, dataset)
+            inject_branch(self.branch, catalog, dataset, hook="before_pipeliene_run")
 
     @hook_impl
     def after_catalog_created(self, catalog: DataCatalog) -> None:
         """Inject branch information `after_catalog_created` if the dataset exists."""
         for dataset in catalog.list():
-            inject_branch(self.branch, catalog, dataset)
+            inject_branch(self.branch, catalog, dataset, hook="after_catalog_created")
         if self.announce:
             announce_protection(catalog)
 
@@ -96,4 +94,6 @@ class SteelToes:
         On first run of a branch it will create this will create the dataset
         """
         for output in outputs:
-            inject_branch(self.branch, catalog, output, save_mode=True)
+            inject_branch(
+                self.branch, catalog, output, save_mode=True, hook="after_node_run"
+            )

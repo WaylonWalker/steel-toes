@@ -14,6 +14,8 @@ from typing import Any, List, Optional, Union
 from colorama import Fore
 from kedro.io.data_catalog import DataCatalog
 
+logger = logging.getLogger("steel_toes")
+
 
 def get_current_branch(proj_dir: Union[str, Path, None] = None) -> Optional[str]:
     """Get the current branch to use.
@@ -62,6 +64,7 @@ def inject_branch(
     dataset: str,
     save_mode: bool = False,
     reset: bool = False,
+    hook: str = "",
 ) -> None:
     """Inject branch into _filepath attribute of dataset.
 
@@ -97,6 +100,9 @@ def inject_branch(
         return
 
     if branched_dataset_exists(d, branched_filepath) or save_mode or reset:
+        logger.info(
+            f"STEEL_TOES:{hook} '{d._filepath.stem}{d._filepath.suffix}' -> '{branched_filepath.stem}{branched_filepath.suffix}'"
+        )
         d._filepath = branched_filepath
         d._filepath_swapped = True
 
