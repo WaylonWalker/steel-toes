@@ -96,6 +96,37 @@ model_input_table: /home/waylon/git/spaceflights/data/03_primary/model_input_tab
 regressor: /home/waylon/git/spaceflights/data/06_models/regressor_main.pickle
 ```
 
+## Logs
+
+When first running your pipeline with `steel-toes` it will start the
+`_filepath` swap **after_node_run**, since the swapped file does not yet exist.
+
+> At this point catalog.load('preprocessed_shuttles') will **not** load the
+> branched dataset.
+
+```bash
+❯ kedro run
+INFO     Kedro project spaceflights                                                               session.py:340
+...
+INFO     STEEL_TOES:after_node_run 'preprocessed_shuttles.pq' -> 'preprocessed_shuttles_main.pq'  steel_toes.py:102
+...
+INFO     Completed 6 out of 6 tasks                                                               sequential_runner.py:85
+INFO     Pipeline execution completed successfully.                                               runner.py:90
+```
+
+Subsequent runs of kedro will swap the dataset to the branched filepath
+immediately after the catalog has been created.
+
+> Now catalog.load('preprocessed_shuttles') **will** load the branched dataset.
+
+````bash
+INFO     Kedro project spaceflights                                                                      session.py:340
+...
+INFO     STEEL_TOES:after_catalog_created 'preprocessed_shuttles.pq' -> 'preprocessed_shuttles_main.pq'  steel_toes.py:102
+...
+INFO     Completed 6 out of 6 tasks                                                                      sequential_runner.py:85
+INFO     Pipeline execution completed successfully.                                                      runner.py:90
+
 ### CLI Usage
 
 The CLI provides a handy interface to clean up your branched datasets.
@@ -112,7 +143,7 @@ Options:
 
 Commands:
   clean-branch  finds branch datasets and removes them
-```
+````
 
 `steel-toes` also registers itself as a `kedro` global cli plugin. You can run `kedro clean-branch` to clean your branched data.
 
