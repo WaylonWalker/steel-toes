@@ -164,6 +164,28 @@ Options:
   -h, --help                 Show this message and exit.
 ```
 
+## Cleaning up old branches
+
+To clean up your current branch, running `kedro clean-branch` will remove all
+the datasets that have been swapped to the current branch. Adding `--dryrun`
+will only log what `steel-toes` intends to do, and will not delete.
+
+```
+❯ kedro clean-branch --dryrun
+INFO     STEEL_TOES:after_catalog_created 'preprocessed_shuttles.pq' -> 'preprocessed_shuttles_main.pq'                                         steel_toes.py:102
+...
+INFO     STEEL_TOES:dryrun-remove | '/home/waylon/git/spaceflights/data/02_intermediate/preprocessed_shuttles_main.pq'                          steel_toes.py:141
+```
+
+Dropping the `--dryrun` flag will delete all the branched datasets.
+
+```
+❯ kedro clean-branch
+INFO     STEEL_TOES:after_catalog_created 'preprocessed_shuttles.pq' -> 'preprocessed_shuttles_main.pq'                                         steel_toes.py:102
+...
+INFO     STEEL_TOES:deleting | '/home/waylon/git/spaceflights/data/02_intermediate/preprocessed_shuttles_main.pq'                          steel_toes.py:141
+```
+
 ## Contributing
 
 **You're Awesome** for considering a contribution! Contributions are welcome,
