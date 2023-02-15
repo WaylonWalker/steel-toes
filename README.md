@@ -1,4 +1,6 @@
-<h1 align='center'><span aria-role='img' aria-label='boot'>🥾</span> Steel Toes</h1>
+<h1 align='center'> Steel Toes</h1>
+
+<img src="https://user-images.githubusercontent.com/22648375/218914190-22fb1188-5587-4152-ae46-6fe7cb770ca2.png" alt="steel-toes" width="250" align=right>
 
 _a kedro hook to protect against breaking changes to data_
 
