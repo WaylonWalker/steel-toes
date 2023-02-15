@@ -96,7 +96,7 @@ model_input_table: /home/waylon/git/spaceflights/data/03_primary/model_input_tab
 regressor: /home/waylon/git/spaceflights/data/06_models/regressor_main.pickle
 ```
 
-## Logs
+## Logs on first run
 
 When first running your pipeline with `steel-toes` it will start the
 `_filepath` swap **after_node_run**, since the swapped file does not yet exist.
@@ -113,6 +113,8 @@ INFO     STEEL_TOES:after_node_run 'preprocessed_shuttles.pq' -> 'preprocessed_s
 INFO     Completed 6 out of 6 tasks                                                               sequential_runner.py:85
 INFO     Pipeline execution completed successfully.                                               runner.py:90
 ```
+
+## Logs after dataset exists
 
 Subsequent runs of kedro will swap the dataset to the branched filepath
 immediately after the catalog has been created.
