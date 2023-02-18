@@ -3,11 +3,31 @@ cli module provides steel-toes command line interface.
 
 The main use case for the cli is to cleanup data after branch work is done.
 """
-import click
+from pathlib import Path
 
-from .core import clean_branch as _clean_branch
+import click
+from kedro.framework.project import settings
+
+from steel_toes.steel_toes import clean_branch as _clean_branch
 
 __version__ = "0.2.0"
+
+
+def _eighteen_path_lookup(server):
+    from kedro.config.common import _lookup_config_filepaths
+
+    conf_loader = settings.CONFIG_LOADER_CLASS(server.settings.CONF_SOURCE)
+    paths = []
+    for path in conf_loader.conf_paths:
+        paths.extend(
+            _lookup_config_filepaths(
+                conf_path=Path(path),
+                patterns=["catalog*", "**/catalog*/**", "**/catalog*"],
+                processed_files=set(),
+                logger=None,
+            )
+        )
+    return paths
 
 
 @click.group(name="steel-toes")

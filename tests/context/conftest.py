@@ -83,7 +83,6 @@ def base_config(tmp_path: Path) -> Dict:
     generic_config = {
         "type": "pandas.CSVDataSet",
         "save_args": {"index": False},
-        #         "versioned": True,
         "layer": "raw",
     }
 

@@ -7,13 +7,17 @@ into fielpaths.
 import copy
 import logging
 import os
-import subprocess
 from pathlib import Path
+import subprocess
 from typing import Any, List, Optional, Union
 
 from colorama import Fore
-from kedro.framework.context import KedroContext, load_context
+from kedro.framework.session import KedroSession
+from kedro.framework.startup import bootstrap_project
 from kedro.io.data_catalog import DataCatalog
+
+logger = logging.getLogger("steel_toes")
+logger.setLevel(logging.INFO)
 
 
 def get_current_branch(proj_dir: Union[str, Path, None] = None) -> Optional[str]:
@@ -40,7 +44,7 @@ def get_current_git_branch(proj_dir: Union[str, Path, None] = None) -> Optional[
         )
         return str(res.decode()).strip()
     except (subprocess.CalledProcessError, FileNotFoundError):
-        logging.getLogger(__name__).warning(f"Unable to git describe {proj_dir}")
+        logger.warning(f"Unable to git describe {proj_dir}")
     return None
 
 
@@ -63,6 +67,7 @@ def inject_branch(
     dataset: str,
     save_mode: bool = False,
     reset: bool = False,
+    hook: str = "",
 ) -> None:
     """Inject branch into _filepath attribute of dataset.
 
@@ -90,14 +95,17 @@ def inject_branch(
         branched_filepath = (
             filepath.parent / f"{filepath.stem}{branchstr}{filepath.suffix}"
         )
-    # elif branch is not None and filepath.stem[-len(branch) - 1 :] == f"_{branch}":
-    #     branched_filepath = (
-    #         filepath.parent / f"{filepath.stem[:-len(branch) - 1]}{filepath.suffix}"
-    #     )
     else:
         return
 
     if branched_dataset_exists(d, branched_filepath) or save_mode or reset:
+        logger.info(
+            (
+                f"STEEL_TOES:{hook} "
+                f"'{d._filepath.stem}{d._filepath.suffix}' -> "
+                f"'{branched_filepath.stem}{branched_filepath.suffix}'"
+            )
+        )
         d._filepath = branched_filepath
         d._filepath_swapped = True
 
@@ -130,9 +138,10 @@ def rm_dataset(catalog: DataCatalog, dataset: str, dryrun: bool = False) -> None
         return
 
     if dryrun:
-        print("dryrun remove |", filepath)
+        logger.info(f"STEEL_TOES:dryrun-remove | '{filepath}'")
+
     else:
-        print("deleting | ", filepath)
+        logger.info(f"STEEL_TOES:deleting | '{filepath}'")
         d._fs.delete(filepath, recursive=True)
 
 
@@ -145,7 +154,6 @@ def switch_branch(
     allows for the user to cleanup when they no longer have the branch active.
     """
     current_branch = get_current_git_branch(directory)
-    # breakpoint()
     if current_branch is None:  # pragma: no cover
         # branch is not mocked
         return
@@ -159,7 +167,7 @@ def clean_branch(
     directory: Union[str, Path] = ".",
     branch: str = None,
     dryrun: bool = False,
-    context: KedroContext = None,
+    context=None,
 ) -> None:
     """Iterate over the catalog to remove branched datasets.
 
@@ -172,12 +180,28 @@ def clean_branch(
     """
     if context is None:
         # tests do not create a full project structure an need to pass context
-        context = load_context(directory)  # pragma: nocover
+        bootstrap_project(Path(".").absolute())
+        session = KedroSession.create()
+        context = session.load_context()
     catalog = context.catalog
     if branch is not None:
         switch_branch(directory=directory, catalog=catalog, branch=branch)
-    for dataset in catalog.list():
+    logger.info("STEEL_TOES: No Datasets to remove.")
+    # datasets = [d for d in catalog.list() if not d.startswith("params")]
+    datasets = [
+        d
+        for d in catalog.list()
+        if hasattr(getattr(catalog.datasets, d, ""), "_filepath")
+    ]
+    if not datasets:
+        logger.info("STEEL_TOES: No Datasets to remove.")
+
+    for dataset in datasets:
         rm_dataset(catalog=catalog, dataset=dataset, dryrun=dryrun)
+    if dryrun:
+        logger.info(
+            "STEEL_TOES:dryrun-remove | logged all files to remove. Run 'kedro run clean-branch' to remove them."
+        )
 
 
 def whos_protected(catalog: DataCatalog = None) -> List[str]:
@@ -187,7 +211,7 @@ def whos_protected(catalog: DataCatalog = None) -> List[str]:
     branched datasets.
     """
     if catalog is None:
-        catalog = load_context(".").catalog  # pragma: no cover
+        ...
     protected = list()
     for dataset in catalog.list():
         try:
@@ -217,5 +241,7 @@ def announce_protection(catalog: DataCatalog) -> None:
             print(
                 f"{Fore.LIGHTBLACK_EX}{dataset}: {Fore.LIGHTMAGENTA_EX}{d._filepath}{Fore.RESET}"
             )
+        except AttributeError:  # pragma: no cover
+            pass
         except AttributeError:  # pragma: no cover
             pass

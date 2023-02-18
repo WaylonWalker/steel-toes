@@ -1,0 +1,20 @@
+name: Release
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "steel_toes/**"
+      - "pyproject.toml"
+env:
+  HATCH_INDEX_USER: __token__
+  HATCH_INDEX_AUTH: ${{ secrets.pypi_password }}
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: waylonwalker/hatch-action@v3.10
+        with:
+          before-command: "test-lint"
+        env:
+          GH_TOKEN: ${{ github.token }}
