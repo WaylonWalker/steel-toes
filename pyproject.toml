@@ -32,6 +32,7 @@ dependencies = [
 
 [tool.hatch.envs.default]
 dependencies = [
+    "black",
     "coverage",
     "coverage-rich",
     "GitPython",
