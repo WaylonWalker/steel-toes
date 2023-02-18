@@ -186,7 +186,7 @@ def clean_branch(
     catalog = context.catalog
     if branch is not None:
         switch_branch(directory=directory, catalog=catalog, branch=branch)
-    logger.info(f"STEEL_TOES: No Datasets to remove.")
+    logger.info("STEEL_TOES: No Datasets to remove.")
     # datasets = [d for d in catalog.list() if not d.startswith("params")]
     datasets = [
         d
@@ -194,13 +194,13 @@ def clean_branch(
         if hasattr(getattr(catalog.datasets, d, ""), "_filepath")
     ]
     if not datasets:
-        logger.info(f"STEEL_TOES: No Datasets to remove.")
+        logger.info("STEEL_TOES: No Datasets to remove.")
 
     for dataset in datasets:
         rm_dataset(catalog=catalog, dataset=dataset, dryrun=dryrun)
     if dryrun:
         logger.info(
-            f"STEEL_TOES:dryrun-remove | logged all files to remove. Run 'kedro run clean-branch' to remove them."
+            "STEEL_TOES:dryrun-remove | logged all files to remove. Run 'kedro run clean-branch' to remove them."
         )
 
 
