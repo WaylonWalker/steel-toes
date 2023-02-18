@@ -72,7 +72,6 @@ build-docs = "markata build"
 lint-test = [
  "lint",
  "format-check",
- "cov",
 ]
 test-lint = "lint-test"
 
