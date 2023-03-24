@@ -68,6 +68,7 @@ def inject_branch(
     save_mode: bool = False,
     reset: bool = False,
     hook: str = "",
+    ignore_types: List = [],
 ) -> None:
     """Inject branch into _filepath attribute of dataset.
 
@@ -89,6 +90,13 @@ def inject_branch(
 
     if hasattr(d, "_filepath_swapped") and not reset:
         return
+
+    if filepath is None:
+        return
+
+    for _type in ignore_types:
+        if isinstance(d, _type):
+            return
 
     if not reset:
         branchstr = branch if branch == "" else f"_{branch}"
