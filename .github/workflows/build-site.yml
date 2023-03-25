@@ -7,8 +7,9 @@ on:
   push:
     branches:
       - "*"
-      # do not trigger ci when pushing gh-pages step
       - "!prod-markata"
+    paths:
+      - "docs"
   pull_request:
     branches:
       - "main"
@@ -27,16 +28,18 @@ jobs:
       - name: Set up Python 3.10
         uses: actions/setup-python@v1
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: install hatch
         run: pip install hatch
 
       - name: build with markata
         run: hatch run build
-        
+        working-directory: ./docs
+
       - name: GitHub Pages
         uses: crazy-max/ghaction-github-pages@v3.0.0
+        working-directory: ./docs
         with:
           # you can choose the target branch of your choice
           target_branch: prod-markata
