@@ -1,0 +1,236 @@
+#
+#  __  __            _         _         _                  _
+# |  \/  | __ _ _ __| | ____ _| |_ __ _ | |_ ___  _ __ ___ | |
+# | |\/| |/ _` | '__| |/ / _` | __/ _` || __/ _ \| '_ ` _ \| |
+# | |  | | (_| | |  |   < (_| | || (_| || || (_) | | | | | | |
+# |_|  |_|\__,_|_|  |_|\_\__,_|\__\__,_(_)__\___/|_| |_| |_|_|
+#
+#                                           https://steel-toes.kedro.dev
+
+[markata]
+# bump site version to bust GitHub actions cache
+version = 0
+
+# 2 weeks in seconds
+default_cache_expire = 1209600
+
+## Markata Setup
+
+# Patterns to look for content
+glob_patterns = "pages/**/*.md"
+
+# include an edit link
+edit = false
+
+# Where to output the site
+# output_dir = "markout"
+
+# Static directory to copy over
+# assets_dir = "static"
+
+# plugins to enable
+hooks = [
+   "markata.plugins.publish_source",
+   "markata.plugins.prevnext",
+   # "markata.plugins.service_worker", # enable the service_worker to deploy as a pwa with offline support, not reccommended for pages with frequent changes.
+    "default"
+]
+
+# plugins to disable
+disabled_hooks = [
+    # seo is replaces by using markta.head.meta in config
+    "markata.plugins.seo",  
+]
+
+## Site Config
+url = "https://steel-toes.kedro.dev"
+description = "Docs for the Steel Toes kedro plugin."
+title = "steel-toes"
+rss_description = "Docs for the Steel Toes kedro plugin."
+author_name = "Waylon Walker"
+author_email = "waylon@waylonwalker.com"
+
+## PWA config
+site_name = "steel-toes"
+theme_color = "#322D39"
+background_color = "#B73CF6"
+start_url = "/"
+short_name = "steel-toes"
+display = "minimal-ui"
+icon = "icon.png"
+
+
+# use a different template than the built in one
+# post_template = "pages/templates/post_template.html"
+
+## Color Theme
+# color_bg = '#1f2022'
+# color_bg_code = '#1f2022'
+# color_text = '#eefbfe'
+# color_link = '#fb30c4' 
+# color_accent = '#e1bd00c9'
+# overlay_brightness = '.85'
+
+# color_bg_light = '#eefbfe'
+# color_bg_code_light = '#eefbfe'
+# color_text_light = '#1f2022'
+# color_link_light = '#47cbff' 
+# color_accent_light = '#ffeb00'
+# overlay_brightness_light = '.95'
+
+# default lang
+lang = 'en'
+
+[markata.nav]
+'Home'='/'
+'All Posts'='/archive'
+
+[markata.prevnext]
+# strategy can be 'first' or 'all'
+# 'first' will cycle through the first map the post is found in.
+# 'all' will cycle through all of the maps
+strategy='first'
+
+# if you want different colors than your main color_text and color_accent, then
+# you can override it here
+# colors can be any valid css color format
+
+prevnext_color_text="white"
+prevnext_color_text_light="black"
+prevnext_color_angle="white"
+prevnext_color_angle_light="black"
+
+## markata.plugins.auto_description configuration
+[markata.auto_description.description]
+len=160
+[markata.auto_description.long_description]
+len=250
+[markata.auto_description.super_description]
+len=500
+
+[markata.auto_publish.filters]
+til="templateKey=='til' and date<=today and post.get('published', False)== 'True'"
+
+## SEO | <head>
+[[markata.head.text]]
+# dynamically get the title for each page
+value = "<title>{{ title|e }}</title>"
+
+[[markata.head.meta]]
+name = "twitter:title"
+# dynamically get the title for each page
+content = "{{ title|e }}"
+
+[[markata.head.meta]]
+name = "og:title"
+# dynamically get the title for each page
+content = "{{ title|e }}"
+
+[[markata.head.meta]]
+name = "description"
+# dynamically get the description for each page
+content = "{{ description|e }}"
+
+[[markata.head.meta]]
+name = "og:description"
+# dynamically get the description for each page
+content = "{{ description|e }}"
+
+[[markata.head.meta]]
+name = "twitter:description"
+# dynamically get the description for each page
+content = "{{ description|e }}"
+
+
+[[markata.head.meta]]
+name = "og:type"
+content = "article"
+
+[[markata.head.link]]
+# dynamically get the canonical url for each page
+href="{{ config.url }}/{{ slug + '/' if slug != 'index' else '' }}"
+rel="canonical"
+
+[[markata.head.meta]]
+# dynamically get the canonical url for each page
+name="og:url"
+content="{{ config.url }}/{{ slug }}/"
+
+[[markata.head.meta]]
+# dynamically get the canonical url for each page
+name="og:image"
+content="{{ config.url }}/{{ slug }}.jpg"
+
+[[markata.head.meta]]
+name="og:image:width"
+content=1200
+
+[[markata.head.meta]]
+name="og:image:height"
+content=600
+
+
+[[markata.head.meta]]
+name="twitter:creator"
+content="@_waylonwalker"
+
+
+[[markata.head.meta]]
+name="twitter:card"
+content="summary_large_image"
+
+
+[[markata.head.meta]]
+name = "og:author"
+content = "Waylon Walker"
+
+
+[[markata.head.meta]]
+name = "og:site_name"
+content = "steel-toes"
+
+
+[[markata.head.meta]]
+name = "og:author_email"
+content = "waylon@waylonwalker.com"
+
+
+[[markata.head.meta]]
+# set the site generator to the current markata version
+name = "generator"
+content = "markata {{ __version__ }}"
+
+# [[markata.head.meta]]
+# name = "monetization"
+# content = "<your wallet url>"
+
+[[markata.head.meta]]
+name = "theme-color"
+content="#322D39"
+
+
+## markata.plugins.feeds configuration
+[markata.feeds.archive]
+# creates a feed at /archive
+filter="date<=today and post.get('published', False)"
+sort="date"
+reverse="True"
+
+[markata.feeds.all]
+# creates a feed at /all
+filter="True"
+sort="date"
+reverse="True"
+
+[markata.feeds.published]
+# creates a feed at /published
+filter="date<=today and post.get('published', False)"
+sort="date"
+reverse="True"
+
+[markata.feeds.draft]
+# creates a feed at /draft
+filter="date>today or not post.get('published', False)"
+sort="date"
+reverse="True"
+

@@ -1,0 +1,11 @@
+# Changes here will be overwritten by Copier
+_commit: v3
+_src_path: git+https://github.com/WaylonWalker/markata-blog-starter
+author_email: waylon@waylonwalker.com
+author_fullname: Waylon Walker
+author_twitter: '@_waylonwalker'
+description: Docs for the Steel Toes kedro plugin.
+project_name: steel-toes
+python_package_import_name: steel_toes
+url: https://steel-toes.kedro.dev
+
