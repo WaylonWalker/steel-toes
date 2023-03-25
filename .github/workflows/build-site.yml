@@ -5,11 +5,11 @@ name: Build using markata
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches:
-      - "*"
-      - "!prod-markata"
-    paths:
-      - "docs"
+    # branches:
+    #   - "*"
+    #   - "!prod-markata"
+    # paths:
+    #   - "docs/**"
   pull_request:
     branches:
       - "main"
@@ -39,10 +39,9 @@ jobs:
 
       - name: GitHub Pages
         uses: crazy-max/ghaction-github-pages@v3.0.0
-        working-directory: ./docs
         with:
           # you can choose the target branch of your choice
           target_branch: prod-markata
-          build_dir: markout
+          build_dir: docs/markout
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
