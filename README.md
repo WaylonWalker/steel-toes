@@ -4,9 +4,9 @@
 
 _a kedro hook to protect against breaking changes to data_
 
-`steel-toes` is a kedro hook designed to prevent stepping on your teammates
-toes. It will branch your data automatically based on your git branch, or
-manually by passing the branch name into the hook.
+`steel-toes` is a plugin for the python data pipelining framework **kedro**.
+It modifies each datasets filepath when you are developing a new feature to the
+pipeline, but do not want to wreck pipelines running on other branches.
 
 ## Motivation
 

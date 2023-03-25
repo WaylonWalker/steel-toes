@@ -10,6 +10,10 @@
 [markata]
 # bump site version to bust GitHub actions cache
 version = 0
+## choose your markdown backend
+# markdown_backend='markdown'
+# markdown_backend='markdown2'
+markdown_backend='markdown-it-py'
 
 # 2 weeks in seconds
 default_cache_expire = 1209600
@@ -31,7 +35,7 @@ edit = false
 # plugins to enable
 hooks = [
    "markata.plugins.publish_source",
-   "markata.plugins.prevnext",
+   # "markata.plugins.prevnext",
    # "markata.plugins.service_worker", # enable the service_worker to deploy as a pwa with offline support, not reccommended for pages with frequent changes.
     "default"
 ]
@@ -39,7 +43,8 @@ hooks = [
 # plugins to disable
 disabled_hooks = [
     # seo is replaces by using markta.head.meta in config
-    "markata.plugins.seo",  
+    "markata.plugins.seo",
+    "markata.plugins.heading_link",
 ]
 
 ## Site Config
@@ -57,7 +62,7 @@ background_color = "#B73CF6"
 start_url = "/"
 short_name = "steel-toes"
 display = "minimal-ui"
-icon = "icon.png"
+icon = "steel-toes.png"
 
 
 # use a different template than the built in one
@@ -67,14 +72,14 @@ icon = "icon.png"
 # color_bg = '#1f2022'
 # color_bg_code = '#1f2022'
 # color_text = '#eefbfe'
-# color_link = '#fb30c4' 
+# color_link = '#fb30c4'
 # color_accent = '#e1bd00c9'
 # overlay_brightness = '.85'
 
 # color_bg_light = '#eefbfe'
 # color_bg_code_light = '#eefbfe'
 # color_text_light = '#1f2022'
-# color_link_light = '#47cbff' 
+# color_link_light = '#47cbff'
 # color_accent_light = '#ffeb00'
 # overlay_brightness_light = '.95'
 
@@ -82,8 +87,10 @@ icon = "icon.png"
 lang = 'en'
 
 [markata.nav]
-'Home'='/'
-'All Posts'='/archive'
+'Docs'='/'
+'GitHub'='https://github.com/WaylonWalker/steel-toes/'
+'PyPi'='https://pypi.org/project/steel-toes/'
+'Issues'='https://github.com/WaylonWalker/steel-toes/issues'
 
 [markata.prevnext]
 # strategy can be 'first' or 'all'
@@ -208,6 +215,48 @@ content = "markata {{ __version__ }}"
 name = "theme-color"
 content="#322D39"
 
+# markdown_it flavor
+[markata.markdown_it_py]
+config='gfm-like'
+# markdown_it built-in plugins
+enable = [ "table" ]
+disable = [ "image" ]
+
+# markdown_it built-in plugin options
+[markata.markdown_it_py.options_update]
+linkify = true
+html = true
+typographer = true
+highlight = 'markata.plugins.md_it_highlight_code:highlight_code'
+
+# add custom markdown_it plugins
+[[markata.markdown_it_py.plugins]]
+plugin = "mdit_py_plugins.admon:admon_plugin"
+
+[[markata.markdown_it_py.plugins]]
+plugin = "mdit_py_plugins.admon:admon_plugin"
+
+[[markata.markdown_it_py.plugins]]
+plugin = "mdit_py_plugins.attrs:attrs_plugin"
+config = {spans = true}
+
+[[markata.markdown_it_py.plugins]]
+plugin = "mdit_py_plugins.attrs:attrs_block_plugin"
+
+[[markata.markdown_it_py.plugins]]
+plugin = "markata.plugins.mdit_details:details_plugin"
+
+[[markata.markdown_it_py.plugins]]
+plugin = "mdit_py_plugins.anchors:anchors_plugin"
+
+[markata.markdown_it_py.plugins.config]
+permalink = true
+permalinkSymbol = '<svg class="heading-permalink" aria-hidden="true" fill="currentColor" focusable="false" height="1em" viewBox="0 0 24 24" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M9.199 13.599a5.99 5.99 0 0 0 3.949 2.345 5.987 5.987 0 0 0 5.105-1.702l2.995-2.994a5.992 5.992 0 0 0 1.695-4.285 5.976 5.976 0 0 0-1.831-4.211 5.99 5.99 0 0 0-6.431-1.242 6.003 6.003 0 0 0-1.905 1.24l-1.731 1.721a.999.999 0 1 0 1.41 1.418l1.709-1.699a3.985 3.985 0 0 1 2.761-1.123 3.975 3.975 0 0 1 2.799 1.122 3.997 3.997 0 0 1 .111 5.644l-3.005 3.006a3.982 3.982 0 0 1-3.395 1.126 3.987 3.987 0 0 1-2.632-1.563A1 1 0 0 0 9.201 13.6zm5.602-3.198a5.99 5.99 0 0 0-3.949-2.345 5.987 5.987 0 0 0-5.105 1.702l-2.995 2.994a5.992 5.992 0 0 0-1.695 4.285 5.976 5.976 0 0 0 1.831 4.211 5.99 5.99 0 0 0 6.431 1.242 6.003 6.003 0 0 0 1.905-1.24l1.723-1.723a.999.999 0 1 0-1.414-1.414L9.836 19.81a3.985 3.985 0 0 1-2.761 1.123 3.975 3.975 0 0 1-2.799-1.122 3.997 3.997 0 0 1-.111-5.644l3.005-3.006a3.982 3.982 0 0 1 3.395-1.126 3.987 3.987 0 0 1 2.632 1.563 1 1 0 0 0 1.602-1.198z"></path></svg>'
+
+[[markata.markdown_it_py.plugins]]
+plugin = "markata.plugins.md_it_wikilinks:wikilinks_plugin"
+config = {markata = "markata"}
+
 
 ## markata.plugins.feeds configuration
 [markata.feeds.archive]
@@ -233,4 +282,3 @@ reverse="True"
 filter="date>today or not post.get('published', False)"
 sort="date"
 reverse="True"
-
