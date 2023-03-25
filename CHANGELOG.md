@@ -1,3 +1,20 @@
+## 0.3.0
+
+* FEATURE - steel toes now allows you to specify ignore_types
+
+### ignore_types
+
+Some datasets have a `_filepath` attribute that is not meant for saving
+datasets to and is not needed to be "branched", and should be ignored from
+steel_toes, for example `SQLQueryDataSet`.
+
+``` python
+# settings.py
+from kedro.extras.datasets.pandas.sql_dataset import SQLQueryDataSet, SQLTableDataSet
+
+HOOKS = (SteelToes(ignore_types=[SQLQueryDataSet, SQLTableDataSet]),)
+```
+
 ## 0.2.0
 
 * FEATURE - steel toes will now prefer `STEEL_TOES_BRANCH` environment variable

@@ -52,8 +52,24 @@ To add `SteelToes` to your kedro>0.18.0 project add an instance of the
 `SteelToes` hook to your tuple of hooks in src/<project_name>/settings.py.
 
 ```python
+# settings.py
 from steel_toes import SteelToes
+
 HOOKS = (SteelToes(),)
+```
+
+### ignore_types
+
+Some datasets have a `_filepath` attribute that is not meant for saving
+datasets to and is not needed to be "branched", and should be ignored from
+steel_toes, for example `SQLQueryDataSet`.
+
+```python
+# settings.py
+from kedro.extras.datasets.pandas.sql_dataset import SQLQueryDataSet, SQLTableDataSet
+from steel_toes import SteelToes
+
+HOOKS = (SteelToes(ignore_types=[SQLQueryDataSet, SQLTableDataSet]),)
 ```
 
 ## Automatic branch naming

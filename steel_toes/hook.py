@@ -27,6 +27,11 @@ from kedro.io.data_catalog import DataCatalog
 from kedro.pipeline import Pipeline
 
 from steel_toes.steel_toes import announce_protection, get_current_branch, inject_branch
+from rich.console import Console
+
+from typing import List
+
+console = Console()
 
 
 class SteelToes:
@@ -54,9 +59,11 @@ class SteelToes:
         self,
         branch: Union[str, None] = None,
         announce: bool = False,
+        ignore_types: List = [],
     ) -> None:
         """Initialize a steel_toes kedro hook instance."""
         project_path = Path(".")
+        console.log("init steel toes")
         if branch is None:
             branch = get_current_branch(
                 project_path
@@ -68,18 +75,32 @@ class SteelToes:
         else:
             self.branch = branch
         self.announce = announce
+        self.ignore_types = ignore_types
 
     @hook_impl
     def before_pipeline_run(self, pipeline: Pipeline, catalog: DataCatalog) -> None:
         """Inject branch information `before_pipeline_run` if the dataset exists."""
         for dataset in pipeline.all_inputs():
-            inject_branch(self.branch, catalog, dataset, hook="before_pipeliene_run")
+            inject_branch(
+                self.branch,
+                catalog,
+                dataset,
+                hook="before_pipeliene_run",
+                ignore_types=self.ignore_types,
+            )
 
     @hook_impl
     def after_catalog_created(self, catalog: DataCatalog) -> None:
         """Inject branch information `after_catalog_created` if the dataset exists."""
+        console.log(f"on branch {self.branch}")
         for dataset in catalog.list():
-            inject_branch(self.branch, catalog, dataset, hook="after_catalog_created")
+            inject_branch(
+                self.branch,
+                catalog,
+                dataset,
+                hook="after_catalog_created",
+                ignore_types=self.ignore_types,
+            )
         if self.announce:
             announce_protection(catalog)
 
@@ -91,5 +112,10 @@ class SteelToes:
         """
         for output in outputs:
             inject_branch(
-                self.branch, catalog, output, save_mode=True, hook="after_node_run"
+                self.branch,
+                catalog,
+                output,
+                save_mode=True,
+                hook="after_node_run",
+                ignore_types=self.ignore_types,
             )
