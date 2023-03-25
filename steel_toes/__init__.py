@@ -10,7 +10,7 @@ Copyright (c) 2020, Waylon Walker.
 License: MIT (see LICENSE for details)
 """
 
-__version__ = "0.4.0.dev0"
+__version__ = "0.4.0.dev1"
 __author__ = ("Waylon Walker",)
 __author_email__ = ("waylon@waylonwalker.com",)
 __license__ = "MIT"
