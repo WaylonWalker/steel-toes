@@ -56,7 +56,9 @@ steel-toes = "steel_toes:cli"
 steel-toes = "steel_toes:cli"
 
 [project.urls]
-Homepage = "https://github.com/WaylonWalker/find-kedro.git"
+homepage = "https://github.com/WaylonWalker/steel-toes"
+issues = "https://github.com/WaylonWalker/steel-toes/issues"
+docs = "https://steel-toes.kedro.dev/"
 
 [tool.hatch.version]
 path = "steel_toes/__init__.py"
