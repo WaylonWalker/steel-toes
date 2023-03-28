@@ -4,9 +4,11 @@
 
 _a kedro hook to protect against breaking changes to data_
 
-`steel-toes` is a kedro hook designed to prevent stepping on your teammates
+[steel-toes](https://steel-toes.kedro.dev/) is a kedro hook designed to prevent stepping on your teammates
 toes. It will branch your data automatically based on your git branch, or
 manually by passing the branch name into the hook.
+
+> see [docs](https://steel-toes.kedro.dev/)
 
 ## Motivation
 
