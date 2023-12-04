@@ -18,6 +18,7 @@ need to use a bit of an unconventional method to initialize your hooks.
 
 """
 
+import os
 
 from pathlib import Path
 from typing import Any, Dict, Union
