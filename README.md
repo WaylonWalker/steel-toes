@@ -204,6 +204,24 @@ INFO     STEEL_TOES:after_catalog_created 'preprocessed_shuttles.pq' -> 'preproc
 INFO     STEEL_TOES:deleting | '/home/waylon/git/spaceflights/data/02_intermediate/preprocessed_shuttles_main.pq'                          steel_toes.py:141
 ```
 
+## Disable
+
+You can disable `steel-toes` by setting the `STEEL_TOES_ENABLED` environment
+variable to `False`. This might be useful for debugging inside an environment
+that you cannot easily make a code change to.
+
+**Mac/Linux**
+
+```
+export STEEL_TOES_ENABLED=False
+```
+
+**Windows**
+
+```
+set STEEL_TOES_ENABLED=False
+```
+
 ## Contributing
 
 **You're Awesome** for considering a contribution! Contributions are welcome,
