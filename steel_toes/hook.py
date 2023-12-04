@@ -18,6 +18,7 @@ need to use a bit of an unconventional method to initialize your hooks.
 
 """
 
+import os
 
 from pathlib import Path
 from typing import Any, Dict, Union
@@ -77,9 +78,14 @@ class SteelToes:
         self.announce = announce
         self.ignore_types = ignore_types
 
+        enabled = os.environ.get("STEEL_TOES_ENABLED", "True")
+        self.disabled = enabled.lower() in ["false", "no", "n", "0"]
+
     @hook_impl
     def before_pipeline_run(self, pipeline: Pipeline, catalog: DataCatalog) -> None:
         """Inject branch information `before_pipeline_run` if the dataset exists."""
+        if self.disabled:
+            return
         for dataset in pipeline.all_inputs():
             inject_branch(
                 self.branch,
@@ -92,6 +98,8 @@ class SteelToes:
     @hook_impl
     def after_catalog_created(self, catalog: DataCatalog) -> None:
         """Inject branch information `after_catalog_created` if the dataset exists."""
+        if self.disabled:
+            return
         console.log(f"on branch {self.branch}")
         for dataset in catalog.list():
             inject_branch(
@@ -110,6 +118,8 @@ class SteelToes:
 
         On first run of a branch it will create this will create the dataset
         """
+        if self.disabled:
+            return
         for output in outputs:
             inject_branch(
                 self.branch,
